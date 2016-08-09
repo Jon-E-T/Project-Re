@@ -45,7 +45,7 @@ public class CoinGenerator : MonoBehaviour
                         coinTwo.SetActive(true);
                         break;
                     }
-                default:
+                default :
                     {
                         GameObject coinOne = coinPool[coinSelector].GetPooledObject();
                         coinOne.transform.position = startPosition;
@@ -59,9 +59,7 @@ public class CoinGenerator : MonoBehaviour
                         coinThree.transform.position = new Vector3(startPosition.x + distanceBetweenCoins, startPosition.y, startPosition.z);
                         coinThree.SetActive(true);
                         break;
-
                     }
-
             }
 
         }

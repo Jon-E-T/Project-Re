@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012250578496}
   - 212: {fileID: 212000013110315848}
-  - 61: {fileID: 61000010442018452}
   - 114: {fileID: 114000013231913218}
+  - 60: {fileID: 60000010888623960}
   m_Layer: 0
   m_Name: spikes
   m_TagString: Killbox
@@ -42,8 +42,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &61000010442018452
-BoxCollider2D:
+--- !u!60 &60000010888623960
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -53,9 +53,16 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0.24366188}
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.48732376}
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: 0.32925892, y: 0.4998119}
+      - {x: 0.16903162, y: 0.017294824}
+      - {x: -0.0011405945, y: 0.5022241}
+      - {x: -0.16680288, y: 0.012934089}
+      - {x: -0.3336568, y: 0.50222397}
+      - {x: -0.5, y: 0}
+      - {x: 0.5, y: 0}
 --- !u!114 &114000013231913218
 MonoBehaviour:
   m_ObjectHideFlags: 1

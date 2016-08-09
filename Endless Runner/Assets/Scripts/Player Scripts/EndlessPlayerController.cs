@@ -3,6 +3,7 @@ using System.Collections;
 
 public class EndlessPlayerController : MonoBehaviour {
 
+    // For Testing 
     public bool godMode;
 
 
@@ -147,6 +148,7 @@ public class EndlessPlayerController : MonoBehaviour {
 
     }
 
+    // FOR TESTING ONLY 
     void GodModeActive()
     {
         if (godMode)

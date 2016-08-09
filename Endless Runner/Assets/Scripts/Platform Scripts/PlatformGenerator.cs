@@ -17,6 +17,7 @@ public class PlatformGenerator : MonoBehaviour
     public ObjectPooler spikePool;
     public float frequencyOfSpikes;
 
+
     private float[] platformWidth;
     private int platformSelector;
     private float minHeight;
@@ -24,6 +25,7 @@ public class PlatformGenerator : MonoBehaviour
     private float heightChange;
     // 'CoinGenerator' is a seperat script 
     private CoinGenerator theCoinGen;
+
 
     void Start()
     {
@@ -72,38 +74,51 @@ public class PlatformGenerator : MonoBehaviour
             newPlatform.transform.rotation = transform.rotation;
             newPlatform.SetActive(true);
 
-            // If the Variable set for 'frequencyOfCoins' is greater then a randomly picked number between 0-100
-            if (Random.Range(0f, 100f) < frequencyOfCoins)
-            {
-                // Gold Coin
-                if (theCoinGen.coinSelector == 0)
-                {
-                    // 'SpawnCoins' is a method from 'CoinGenerator' script
-                    theCoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
-                }
-                // Bronze Coins
-                //else if (theCoinGen.coinSelector == 1)
-                //{
-                //    // 'SpawnCoins' is a method from 'CoinGenerator' script
-                //    theCoinGen.SpawnCoins(new Vector3(transform.position.x + Random.Range(-3,3), transform.position.y + 1f, transform.position.z));
-                //}
+            CoinSpawn();
 
-            }
-
-            // If the Variable set for 'frequencyOfSpikes' is greater then a randomly picked number between 0-100
-            if (Random.Range (0f, 100f) < frequencyOfSpikes)
-            {
-                GameObject newSpike = spikePool.GetPooledObject();
-
-                // Moves Spikes into Position
-                Vector3 spikePosition = new Vector3(0f, 0.5f, 0f);
-                newSpike.transform.position = transform.position + spikePosition;
-                newSpike.transform.rotation = transform.rotation;
-                newSpike.SetActive(true);
-            }
+            SpikeSpawn();
 
             transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2), transform.position.y, transform.position.z);
 
+        }
+    }
+
+    void CoinSpawn()
+    {
+        // If the Variable set for 'frequencyOfCoins' is greater then a randomly picked number between 0-100
+        if (Random.Range(0f, 100f) < frequencyOfCoins)
+        {
+            // Gold Coin
+            if (theCoinGen.coinSelector == 0)
+            {
+                // 'SpawnCoins' is a method from 'CoinGenerator' script
+                theCoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z));
+            }
+            // Bronze Coins
+            //else if (theCoinGen.coinSelector == 1)
+            //{
+            //    // 'SpawnCoins' is a method from 'CoinGenerator' script
+            //    theCoinGen.SpawnCoins(new Vector3(transform.position.x + Random.Range(-3,3), transform.position.y + 1f, transform.position.z));
+            //}
+        }
+
+    }
+
+    void SpikeSpawn()
+    {
+        // If the Variable set for 'frequencyOfSpikes' is greater then a randomly picked number between 0-100
+        // And if platformWidth is Grater Then 3
+        if (Random.Range(0f, 100f) < frequencyOfSpikes && platformWidth[platformSelector] > 3)
+        {
+            GameObject newSpike = spikePool.GetPooledObject();
+            // Random X value of current Platform
+            float spikeXPosition = Random.Range(-platformWidth[platformSelector] / 2 + 1f, platformWidth[platformSelector] / 2 - 1f);
+
+            // Moves Spikes into Position
+            Vector3 spikePosition = new Vector3(spikeXPosition, 0.5f, 0f);
+            newSpike.transform.position = transform.position + spikePosition;
+            newSpike.transform.rotation = transform.rotation;
+            newSpike.SetActive(true);
         }
     }
 }
