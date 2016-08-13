@@ -4,11 +4,10 @@ using System.Collections;
 public class CoinPickUps : MonoBehaviour
 {
 
-    // Sets Coin Worth
-    public int scoreFromCoin;
+    public int scoreFromCoin;    // Sets Coin Worth
 
-    // 'ScoreManager' is a seperate script
-    private ScoreManager theScoreManager;
+
+    private ScoreManager theScoreManager;    // 'ScoreManager' is a seperate script
     private AudioSource coinPickUpSound;
 
     void Start()
@@ -23,7 +22,7 @@ public class CoinPickUps : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         // Checks if 'Collider2D' is touching a gameObject that has the name "Player"
-        if(other.gameObject.name == "Player")
+        if (other.gameObject.name == "Player")
         {
             // Makes sure CoinSound plays on every coin
             if (coinPickUpSound.isPlaying)
@@ -33,7 +32,7 @@ public class CoinPickUps : MonoBehaviour
             }
             else
             {
-            coinPickUpSound.Play();
+                coinPickUpSound.Play();
             }
 
             // theScoreManager is refering to the 'ScoreManager' scrip

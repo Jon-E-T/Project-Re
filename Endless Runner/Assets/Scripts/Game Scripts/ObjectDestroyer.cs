@@ -12,7 +12,7 @@ public class ObjectDestroyer : MonoBehaviour
 
     void Update()
     {
-        if(transform.position.x < destructionPoint.transform.position.x)
+        if (transform.position.x < destructionPoint.transform.position.x)
         {
             //-Destroy(gameObject);
             gameObject.SetActive(false);

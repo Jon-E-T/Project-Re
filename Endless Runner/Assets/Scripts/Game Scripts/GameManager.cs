@@ -5,16 +5,13 @@ public class GameManager : MonoBehaviour
 {
 
     public Transform platformGenerator;
-    // 'EndlessPlayerController' is a seperate script
-    public EndlessPlayerController thePlayer;
+    public EndlessPlayerController thePlayer;    // 'EndlessPlayerController' is a seperate script
     public DeathMenu theDeathScreen;
 
     private Vector3 platformStartPoint;
     private Vector3 playerStartpoint;
-    // 'ObjectDestroyer' is a seperate script
-    private ObjectDestroyer[] platformList;
-    // 'ScoreManager' is a seperate script
-    private ScoreManager theScoreManager;
+    private ObjectDestroyer[] platformList;      // 'ObjectDestroyer' is a seperate script
+    private ScoreManager theScoreManager;        // 'ScoreManager' is a seperate script
 
     void Start()
     {
@@ -60,8 +57,7 @@ public class GameManager : MonoBehaviour
         thePlayer.transform.position = playerStartpoint;
         platformGenerator.position = platformStartPoint;
         thePlayer.gameObject.SetActive(true);
-        // Changing variables from the ScoreManager script
-        theScoreManager.scoreCount = 0;
+        theScoreManager.scoredDistance = 0;    // Changing variables from the ScoreManager script
         theScoreManager.canScore = true;
     }
 

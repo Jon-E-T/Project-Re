@@ -16,12 +16,12 @@ public class CameraController : MonoBehaviour
     private float distianceToMove;
     private float distanceToMoveUp;
 
-	void Start ()
+    void Start()
     {
         CameraFollowObjectSelector();
     }
 
-    void Update ()
+    void Update()
     {
         CameraFollow();
     }
@@ -40,11 +40,11 @@ public class CameraController : MonoBehaviour
         // Follows Y Axis Disable To Stop Following Y
         distanceToMoveUp = thePlayer.transform.position.y - lastPlayerPosition.y;
 
-        if(thePlayer.transform.position.y > 7.5)
+        if (thePlayer.transform.position.y > 7.5 || (thePlayer.transform.position.y < -4 && thePlayer.transform.position.y > -6))
         {
             MoveCameraYAxis();
         }
-        else if(thePlayer.transform.position.y < 7.5)
+        else if (thePlayer.transform.position.y < 7.5)
         {
             MoveCameraXAxis();
         }
@@ -60,9 +60,11 @@ public class CameraController : MonoBehaviour
     }
 
     // Moves Camera X Axis Only
-void MoveCameraXAxis()
-    {        // Moves Camera To New Position
-        transform.position = new Vector3(transform.position.x + distianceToMove, transform.position.y, transform.position.z);
+    void MoveCameraXAxis()
+    {
+        //-transform.position = new Vector3(transform.position.x + distianceToMove, transform.position.y, transform.position.z);
 
+        // Moves Camera To New Position
+        transform.position = new Vector3(transform.position.x + distianceToMove, 2, transform.position.z);
     }
 }

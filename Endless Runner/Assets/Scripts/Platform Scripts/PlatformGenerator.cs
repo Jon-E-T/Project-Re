@@ -5,26 +5,35 @@ public class PlatformGenerator : MonoBehaviour
 {
     // use Prefab GameObject!
     // [] turns any variable into an array
+
     public Transform generationPoint;
-    public float distanceBetween;
-    public float distanceBetweenMin;
-    public float distanceBetweenMax;
-    // 'ObjectPool' is a seperat script 
-    public ObjectPooler[] theObjectPool;
+    // Distance Between Platforms
+    public float distanceBetweenPlatforms;
+    public float distanceBetweenPlatformsMin;
+    public float distanceBetweenPlatformsMax;
+    // Platform Height Change
     public Transform maxHeightPoint;
     public float maxHeightChange;
+    public ObjectPooler[] theObjectPool;    // 'ObjectPool' is a seperat script 
+    // Coins
     public float frequencyOfCoins;
+    // Spikes
     public ObjectPooler spikePool;
     public float frequencyOfSpikes;
+    // Power-Ups
+    public ObjectPooler powerupPool;
+    public float powerupHeight;
+    public float frequencyOfPowerups;
 
 
     private float[] platformWidth;
     private int platformSelector;
+    // Platform Height
     private float minHeight;
     private float maxHeight;
     private float heightChange;
-    // 'CoinGenerator' is a seperat script 
-    private CoinGenerator theCoinGen;
+    // Coins
+    private CoinGenerator theCoinGen;       // 'CoinGenerator' is a seperat script 
 
 
     void Start()
@@ -47,7 +56,7 @@ public class PlatformGenerator : MonoBehaviour
     {
         if (transform.position.x < generationPoint.position.x)
         {
-            distanceBetween = Random.Range(distanceBetweenMin, distanceBetweenMax);
+            distanceBetweenPlatforms = Random.Range(distanceBetweenPlatformsMin, distanceBetweenPlatformsMax);
 
             // platformSelector is a private int, the picks from a number Random Range of numbers between 0 and whatever number theObjectPool is set to
             // '.Length' finds the number 'thePltform' is set to automaticly
@@ -63,7 +72,9 @@ public class PlatformGenerator : MonoBehaviour
                 heightChange = minHeight;
             }
 
-            transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2) + distanceBetween, heightChange, transform.position.z);
+            PowerUpSpawn();
+
+            transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2) + distanceBetweenPlatforms, heightChange, transform.position.z);
 
             // Instantiate Copy and paste whatever GameObject is in "public GameObject thePlarform;"
             // '[platformSelector]' from the Random Range already detrmied by the "platformSelector = Random.Range(0, thePlatform.Length);" code above
@@ -79,7 +90,16 @@ public class PlatformGenerator : MonoBehaviour
             SpikeSpawn();
 
             transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2), transform.position.y, transform.position.z);
+        }
+    }
 
+    void PowerUpSpawn()
+    {
+        if (Random.Range(0f, 100f) < frequencyOfPowerups)
+        {
+            GameObject newPowerUp = powerupPool.GetPooledObject();
+            newPowerUp.transform.position = transform.position + new Vector3(distanceBetweenPlatforms / 2f, Random.Range(2f, powerupHeight), 0f);
+            newPowerUp.SetActive(true);
         }
     }
 

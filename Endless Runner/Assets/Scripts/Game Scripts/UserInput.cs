@@ -25,7 +25,7 @@ public class UserInput : MonoBehaviour
 
     void OnScreenPauseButtonToggle()
     {
-        if(pauseScreen.activeInHierarchy || deathScreen.activeInHierarchy)
+        if (pauseScreen.activeInHierarchy || deathScreen.activeInHierarchy)
         {
             pauseButtonToggle.GetComponent<Button>().interactable = false;
         }
@@ -60,5 +60,4 @@ public class UserInput : MonoBehaviour
             Cursor.visible = false;
         }
     }
-
 }

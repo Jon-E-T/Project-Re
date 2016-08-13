@@ -45,7 +45,7 @@ public class CoinGenerator : MonoBehaviour
                         coinTwo.SetActive(true);
                         break;
                     }
-                default :
+                default:
                     {
                         GameObject coinOne = coinPool[coinSelector].GetPooledObject();
                         coinOne.transform.position = startPosition;
