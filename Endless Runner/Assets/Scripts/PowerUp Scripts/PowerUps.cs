@@ -4,14 +4,17 @@ using System.Collections;
 public class PowerUps : MonoBehaviour
 {
     // Power-Ups
-    public bool moreGravity;
+    public bool playerFlying;
     public bool noSpikes;
     // Power-Up Leangth
     public float powerUpActiveTime;
     // Sprite Change
     public Sprite[] powerupSprites;
 
+
+    // Find Scripts
     private PowerUpManager thePowerUpManager;
+
 
     void Start()
     {
@@ -21,8 +24,15 @@ public class PowerUps : MonoBehaviour
     // Awake is called when the script instance is being loaded
     public void Awake()
     {
+        //PowerUpPicker();
+    }
+
+    // This function is called when the object becomes enabled and active
+    public void OnEnable()
+    {
         PowerUpPicker();
     }
+
 
     // OnTriggerEnter2D is called when the Collider2D other enters the trigger (2D physics only)
     public void OnTriggerEnter2D(Collider2D collision)
@@ -30,7 +40,7 @@ public class PowerUps : MonoBehaviour
         // Checks if touching a gameObject that has the name "Player"
         if (collision.name == "Player")
         {
-            thePowerUpManager.ActivatePowerUp(moreGravity, noSpikes, powerUpActiveTime);    // Sends The Selected Variables (At The Top) To the 'ActivatePowerUp' Method In The 'PowerUpManager' Script 
+            thePowerUpManager.ActivatePowerUp(playerFlying, noSpikes, powerUpActiveTime);    // Sends The Selected Variables (At The Top) To the 'ActivatePowerUp' Method In The 'PowerUpManager' Script 
         }
         gameObject.SetActive(false);
     }
@@ -42,11 +52,13 @@ public class PowerUps : MonoBehaviour
         switch (powerUpSelector)
         {
             case 0:
-                moreGravity = true;
-                powerUpActiveTime = 10;
+                playerFlying = true;
+                noSpikes = false;
+                powerUpActiveTime = 5;
                 break;
             case 1:
                 noSpikes = true;
+                playerFlying = false;
                 powerUpActiveTime = 5;
                 break;
         }

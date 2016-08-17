@@ -4,26 +4,55 @@ using System.Collections;
 public class PowerUpManager : MonoBehaviour
 {
     // Copied From 'PowerUps' Script
-    private bool moreGravity;
+    private bool playerFlying;
     private bool noSpikes;
     private float powerUpActiveTime;
     // Not Copied
     private bool powerUpActive;
+    // Find Scripts
     private ScoreManager theScoreManager;
     private PlatformGenerator thePlatformGenerator;
+    private EndlessPlayerController theEndlessPlayerController;
     // Original Variables 
-    private float originalGravityScale;
     private float originalSpikeFrequency;
-    private ObjectDestroyer[] spikeList;
+    private float originalMoveSpeed;
+    private float originalPlatformMax;
+    private float originalPlatformMin;
+    private float originalPlatformHeightChange;
+    private float originalGravityScale;
     // Find Game Object
     private GameObject player;
+    // Destroyer Arrays
+    private ObjectDestroyer[] spikeList;
+    private ObjectDestroyer[] powerupList;
+    // Sounds
+    private bool playSounds;
+    private AudioSource powerupPlayerFlySound;
+    private AudioSource powerupNoSpikesSound;
 
 
     void Start()
     {
+        // Find Scripts
         theScoreManager = FindObjectOfType<ScoreManager>();
         thePlatformGenerator = FindObjectOfType<PlatformGenerator>();
+        theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+
+        // Find Objects
         player = GameObject.Find("Player");
+        powerupPlayerFlySound = GameObject.Find("PlayerFly Sound").GetComponent<AudioSource>();
+        powerupNoSpikesSound = GameObject.Find("NoSpikes Sound").GetComponent<AudioSource>();
+
+        // Find Original Variables
+            // Platforms
+        originalPlatformMax = thePlatformGenerator.distanceBetweenPlatformsMax;
+        originalPlatformMin = thePlatformGenerator.distanceBetweenPlatformsMin;
+        originalPlatformHeightChange = thePlatformGenerator.maxHeightChange;
+            // World
+        originalGravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
+
+        // Sounds
+        playSounds = true;
     }
 
     // Update is called once per frame
@@ -33,7 +62,7 @@ public class PowerUpManager : MonoBehaviour
         {
             powerUpActiveTime -= Time.deltaTime;
 
-            MoreGravityPowerUp();
+            FlyingPlayer();
 
             NoSpikesPowerUp();
 
@@ -41,31 +70,45 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
-    public void ActivatePowerUp(bool mGravity, bool nSpikes, float pUpActiveTime)
+    public void ActivatePowerUp(bool pFly, bool nSpikes, float pUpActiveTime)
     {
-        moreGravity = mGravity;
+        playerFlying = pFly;
         noSpikes = nSpikes;
         powerUpActiveTime = pUpActiveTime;
 
-        originalGravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
+        originalMoveSpeed = theEndlessPlayerController.moveSpeed;
 
         originalSpikeFrequency = thePlatformGenerator.frequencyOfSpikes;
 
         powerUpActive = true;
     }
 
-    void MoreGravityPowerUp()
+    void FlyingPlayer()
     {
-        if (moreGravity)
+        if (playerFlying)
         {
-            if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+            theEndlessPlayerController.MovePlayerToTop();    // Moves Player To Top Of The Screen
+
+            // Changes To Player
+            player.GetComponent<Rigidbody2D>().gravityScale = 0;
+            //theEndlessPlayerController.moveSpeed = originalMoveSpeed;
+            player.GetComponent<BoxCollider2D>().isTrigger = true;
+            theEndlessPlayerController.canDoubleJump = false;
+            player.GetComponent<Rigidbody2D>().velocity = new Vector3(theEndlessPlayerController.moveSpeed, 0f, 0f);
+
+            // Changes To Platforms
+            thePlatformGenerator.distanceBetweenPlatformsMax = 0;
+            thePlatformGenerator.distanceBetweenPlatformsMin = 0;
+            thePlatformGenerator.maxHeightChange = 0;
+
+            // Sound
+            if (playSounds == true)
             {
-                player.GetComponent<Rigidbody2D>().gravityScale = originalGravityScale;
+                powerupPlayerFlySound.Play();
+                playSounds = false;
             }
-            else
-            {
-                player.GetComponent<Rigidbody2D>().gravityScale = 10;
-            }
+
+            PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 
@@ -84,6 +127,15 @@ public class PowerUpManager : MonoBehaviour
                     spikeList[i].gameObject.SetActive(false);
                 }
             }
+
+            // Sound
+            if (playSounds)
+            {
+                powerupNoSpikesSound.Play();
+                playSounds = false;
+            }
+
+            PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 
@@ -91,11 +143,39 @@ public class PowerUpManager : MonoBehaviour
     {
         if (powerUpActiveTime <= 0 || !theScoreManager.canScore)
         {
-            player.GetComponent<Rigidbody2D>().gravityScale = originalGravityScale;
+            if (playerFlying)
+            {
+                // Changes To Player
+                player.GetComponent<BoxCollider2D>().isTrigger = false;
+                player.GetComponent<Rigidbody2D>().gravityScale = originalGravityScale;
+                //theEndlessPlayerController.moveSpeed = originalMoveSpeed;
 
-            thePlatformGenerator.frequencyOfSpikes = originalSpikeFrequency;
+                // Changes To Platforms
+                thePlatformGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
+                thePlatformGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
+                thePlatformGenerator.maxHeightChange = originalPlatformHeightChange;
+            }
 
+            if (noSpikes)
+            {
+                thePlatformGenerator.frequencyOfSpikes = originalSpikeFrequency;
+            }
+
+            playSounds = true;
             powerUpActive = false;
+        }
+    }
+
+    void PowerUpDeSpawner()
+    {
+        //Power-Up DeSpwaner
+        powerupList = FindObjectsOfType<ObjectDestroyer>();
+        for (int i = 0; i < powerupList.Length; i++)
+        {
+            if (powerupList[i].gameObject.name.Contains("Power-Up"))
+            {
+                powerupList[i].gameObject.SetActive(false);
+            }
         }
     }
 

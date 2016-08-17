@@ -32,8 +32,11 @@ public class PlatformGenerator : MonoBehaviour
     private float minHeight;
     private float maxHeight;
     private float heightChange;
-    // Coins
-    private CoinGenerator theCoinGen;       // 'CoinGenerator' is a seperat script 
+    // Find Scripts
+        // Coins
+    private CoinGenerator theCoinGen;       // 'CoinGenerator' is a seperat script
+        // Player
+    private EndlessPlayerController theEndlessPlayerController; 
 
 
     void Start()
@@ -46,10 +49,13 @@ public class PlatformGenerator : MonoBehaviour
             platformWidth[i] = theObjectPool[i].pooledObject.GetComponent<BoxCollider2D>().size.x;
         }
 
+        // Set Variables
         minHeight = transform.position.y;
         maxHeight = maxHeightPoint.position.y;
-        // Finds 'CoinGenerator' Script
+
+        // Finds Scripts
         theCoinGen = FindObjectOfType<CoinGenerator>();
+        theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
     }
 
     void Update()
@@ -72,7 +78,7 @@ public class PlatformGenerator : MonoBehaviour
                 heightChange = minHeight;
             }
 
-            PowerUpSpawn();
+            //PowerUpSpawn();
 
             transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2) + distanceBetweenPlatforms, heightChange, transform.position.z);
 
@@ -93,7 +99,7 @@ public class PlatformGenerator : MonoBehaviour
         }
     }
 
-    void PowerUpSpawn()
+    public void PowerUpSpawn()
     {
         if (Random.Range(0f, 100f) < frequencyOfPowerups)
         {

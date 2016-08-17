@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour
     public float scoredDistance;
     public float highScoredDistance;
     //-public float pointsPerSecond;
-    public bool canScore;
+    public bool canScore;    // Can The Player Score
 
 
     private float dist;
