@@ -33,10 +33,9 @@ public class PlatformGenerator : MonoBehaviour
     private float maxHeight;
     private float heightChange;
     // Find Scripts
-        // Coins
     private CoinGenerator theCoinGen;       // 'CoinGenerator' is a seperat script
-        // Player
-    private EndlessPlayerController theEndlessPlayerController; 
+    private EndlessPlayerController theEndlessPlayerController;
+    private PowerUpManager thePowerUpManager; 
 
 
     void Start()
@@ -56,6 +55,7 @@ public class PlatformGenerator : MonoBehaviour
         // Finds Scripts
         theCoinGen = FindObjectOfType<CoinGenerator>();
         theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+        thePowerUpManager = FindObjectOfType<PowerUpManager>();
     }
 
     void Update()
@@ -101,7 +101,7 @@ public class PlatformGenerator : MonoBehaviour
 
     public void PowerUpSpawn()
     {
-        if (Random.Range(0f, 100f) < frequencyOfPowerups)
+        if (Random.Range(0f, 100f) < frequencyOfPowerups && !thePowerUpManager.isPowerUpActive)
         {
             GameObject newPowerUp = powerupPool.GetPooledObject();
             newPowerUp.transform.position = transform.position + new Vector3(distanceBetweenPlatforms / 2f, Random.Range(2f, powerupHeight), 0f);
