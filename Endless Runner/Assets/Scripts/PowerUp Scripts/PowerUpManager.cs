@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PowerUpManager : MonoBehaviour
 {
+    public bool spawnPowerups;
+
+
     // Copied From 'PowerUps' Script
     private bool playerFlying;
     private bool noSpikes;
@@ -33,6 +36,7 @@ public class PowerUpManager : MonoBehaviour
 
     void Start()
     {
+        spawnPowerups = true;
         // Find Scripts
         theScoreManager = FindObjectOfType<ScoreManager>();
         thePlatformGenerator = FindObjectOfType<PlatformGenerator>();
@@ -68,6 +72,19 @@ public class PowerUpManager : MonoBehaviour
 
             DisablePowerUps();
         }
+
+        if (!spawnPowerups)
+        {
+            //Power-Up DeSpwaner
+            powerupList = FindObjectsOfType<ObjectDestroyer>();
+            for (int i = 0; i < powerupList.Length; i++)
+            {
+                if (powerupList[i].gameObject.name.Contains("Power-Up"))
+                {
+                    powerupList[i].gameObject.SetActive(false);
+                }
+            }
+        }
     }
 
     public void ActivatePowerUp(bool pFly, bool nSpikes, float pUpActiveTime)
@@ -100,6 +117,7 @@ public class PowerUpManager : MonoBehaviour
             thePlatformGenerator.distanceBetweenPlatformsMax = 0;
             thePlatformGenerator.distanceBetweenPlatformsMin = 0;
             thePlatformGenerator.maxHeightChange = 0;
+            spawnPowerups = false;
 
             // Sound
             if (playSounds == true)
@@ -135,6 +153,7 @@ public class PowerUpManager : MonoBehaviour
                 playSounds = false;
             }
 
+            spawnPowerups = false;
             PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
@@ -161,6 +180,7 @@ public class PowerUpManager : MonoBehaviour
                 thePlatformGenerator.frequencyOfSpikes = originalSpikeFrequency;
             }
 
+            spawnPowerups = true;
             playSounds = true;
             powerUpActive = false;
         }
