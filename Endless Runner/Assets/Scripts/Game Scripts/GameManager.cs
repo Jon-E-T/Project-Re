@@ -4,7 +4,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
 
-    public Transform platformGenerator;
+    public Transform LevelGenerator;
     public EndlessPlayerController thePlayer;    // 'EndlessPlayerController' is a seperate script
     public DeathMenu theDeathScreen;
 
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        platformStartPoint = platformGenerator.position;
+        platformStartPoint = LevelGenerator.position;
         playerStartpoint = thePlayer.transform.position;
         // Finds Componints on the 'ScoreManager' script
         theScoreManager = FindObjectOfType<ScoreManager>();
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         }
 
         thePlayer.transform.position = playerStartpoint;
-        platformGenerator.position = platformStartPoint;
+        LevelGenerator.position = platformStartPoint;
         thePlayer.gameObject.SetActive(true);
         theScoreManager.scoredDistance = 0;    // Changing variables from the ScoreManager script
         theScoreManager.canScore = true;
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         }
 
         thePlayer.transform.position = playerStartpoint;
-        platformGenerator.position = platformStartPoint;
+        LevelGenerator.position = platformStartPoint;
         thePlayer.gameObject.SetActive(true);
         // Changing variables from the ScoreManager script
         theScoreManager.scoreCount = 0;

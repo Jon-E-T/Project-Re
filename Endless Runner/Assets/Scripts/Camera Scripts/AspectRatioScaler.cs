@@ -2,17 +2,20 @@
 using System.Collections;
 
 
-public class AspectRatioScaler : MonoBehaviour {
+public class AspectRatioScaler : MonoBehaviour
+{
     private Resolution screenResolution;
 
-    void Start () {
-
+    void Start()
+    {
+        AutoAspect();
     }
 
     // Update is called once per frame
-    void Update () {
-	
-	}
+    void Update()
+    {
+
+    }
 
     public void AutoAspect()
     {

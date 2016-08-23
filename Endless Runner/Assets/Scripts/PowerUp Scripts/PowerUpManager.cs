@@ -11,7 +11,7 @@ public class PowerUpManager : MonoBehaviour
     public bool isPowerUpActive;
     // Find Scripts
     private ScoreManager theScoreManager;
-    private PlatformGenerator thePlatformGenerator;
+    private LevelGenerator theLevelGenerator;
     private EndlessPlayerController theEndlessPlayerController;
     // Original Variables 
     private float originalSpikeFrequency;
@@ -35,7 +35,7 @@ public class PowerUpManager : MonoBehaviour
     {
         // Find Scripts
         theScoreManager = FindObjectOfType<ScoreManager>();
-        thePlatformGenerator = FindObjectOfType<PlatformGenerator>();
+        theLevelGenerator = FindObjectOfType<LevelGenerator>();
         theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
 
         // Find Objects
@@ -45,9 +45,9 @@ public class PowerUpManager : MonoBehaviour
 
         // Find Original Variables
             // Platforms
-        originalPlatformMax = thePlatformGenerator.distanceBetweenPlatformsMax;
-        originalPlatformMin = thePlatformGenerator.distanceBetweenPlatformsMin;
-        originalPlatformHeightChange = thePlatformGenerator.maxHeightChange;
+        originalPlatformMax = theLevelGenerator.distanceBetweenPlatformsMax;
+        originalPlatformMin = theLevelGenerator.distanceBetweenPlatformsMin;
+        originalPlatformHeightChange = theLevelGenerator.maxHeightChange;
             // World
         originalGravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
 
@@ -78,7 +78,7 @@ public class PowerUpManager : MonoBehaviour
 
         originalMoveSpeed = theEndlessPlayerController.moveSpeed;
 
-        originalSpikeFrequency = thePlatformGenerator.frequencyOfSpikes;
+        originalSpikeFrequency = theLevelGenerator.frequencyOfSpikes;
 
         isPowerUpActive = true;
     }
@@ -97,9 +97,9 @@ public class PowerUpManager : MonoBehaviour
             player.GetComponent<Rigidbody2D>().velocity = new Vector3(theEndlessPlayerController.moveSpeed, 0f, 0f);
 
             // Changes To Platforms
-            thePlatformGenerator.distanceBetweenPlatformsMax = 0;
-            thePlatformGenerator.distanceBetweenPlatformsMin = 0;
-            thePlatformGenerator.maxHeightChange = 0;
+            theLevelGenerator.distanceBetweenPlatformsMax = 0;
+            theLevelGenerator.distanceBetweenPlatformsMin = 0;
+            theLevelGenerator.maxHeightChange = 0;
 
             // Sound
             if (playSounds == true)
@@ -116,7 +116,7 @@ public class PowerUpManager : MonoBehaviour
     {
         if (noSpikes)
         {
-            thePlatformGenerator.frequencyOfSpikes = 0;
+            theLevelGenerator.frequencyOfSpikes = 0;
 
             // Spike DeSpawner
             spikeList = FindObjectsOfType<ObjectDestroyer>();
@@ -151,14 +151,14 @@ public class PowerUpManager : MonoBehaviour
                 //theEndlessPlayerController.moveSpeed = originalMoveSpeed;
 
                 // Changes To Platforms
-                thePlatformGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
-                thePlatformGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
-                thePlatformGenerator.maxHeightChange = originalPlatformHeightChange;
+                theLevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
+                theLevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
+                theLevelGenerator.maxHeightChange = originalPlatformHeightChange;
             }
 
             if (noSpikes)
             {
-                thePlatformGenerator.frequencyOfSpikes = originalSpikeFrequency;
+                theLevelGenerator.frequencyOfSpikes = originalSpikeFrequency;
             }
 
             playSounds = true;

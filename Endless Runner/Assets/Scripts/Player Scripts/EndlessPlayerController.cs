@@ -35,7 +35,7 @@ public class EndlessPlayerController : MonoBehaviour
 
     private ScoreManager theScoreManager;
     private Rigidbody2D myRigidbody;
-    private PlatformGenerator thePlatformGenerator;
+    private LevelGenerator theLevelGenerator;
     private Animator myAnimator;
     // Advanced Jumping
     private float jumpTimeCounter;
@@ -57,7 +57,7 @@ public class EndlessPlayerController : MonoBehaviour
     void Start()
     {
         // Find Scripts
-        thePlatformGenerator = FindObjectOfType<PlatformGenerator>();
+        theLevelGenerator = FindObjectOfType<LevelGenerator>();
         theScoreManager = FindObjectOfType<ScoreManager>();
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
@@ -74,8 +74,8 @@ public class EndlessPlayerController : MonoBehaviour
         // Find Original Variables
         originalMoveSpeed = moveSpeed;
         originalSpeedIncreasePoint = speedIncreasePoint;
-        originalPlatformMax = thePlatformGenerator.distanceBetweenPlatformsMax;
-        originalPlatformMin = thePlatformGenerator.distanceBetweenPlatformsMin;
+        originalPlatformMax = theLevelGenerator.distanceBetweenPlatformsMax;
+        originalPlatformMin = theLevelGenerator.distanceBetweenPlatformsMin;
 
     }
 
@@ -100,10 +100,10 @@ public class EndlessPlayerController : MonoBehaviour
     }
 
     // other is the name for any collision 
-    void OnCollisionEnter2D(Collision2D other)    // Player death
+    void OnCollisionEnter2D(Collision2D other)
     {
-        // Checks if this GameObject is Colliding with a gameObject with the tag "Killbox"
-        if (other.gameObject.tag == "Killbox")
+        // Player death
+        if (other.gameObject.tag == "Killbox")    // Checks if this GameObject is Colliding with a gameObject with the tag "Killbox"
         {
             Time.timeScale = 0f;
 
@@ -114,8 +114,8 @@ public class EndlessPlayerController : MonoBehaviour
 
             moveSpeed = originalMoveSpeed;
             speedIncreasePoint = originalSpeedIncreasePoint;
-            thePlatformGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
-            thePlatformGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
+            theLevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
+            theLevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
         }
     }
 
@@ -136,11 +136,11 @@ public class EndlessPlayerController : MonoBehaviour
             moveSpeed += increaseSpeedAmount;
 
             // Platform Increase
-            thePlatformGenerator.distanceBetweenPlatformsMin += platformIncreaseDistance;
-            thePlatformGenerator.distanceBetweenPlatformsMax += platformIncreaseDistance;
+            theLevelGenerator.distanceBetweenPlatformsMin += platformIncreaseDistance;
+            theLevelGenerator.distanceBetweenPlatformsMax += platformIncreaseDistance;
 
             // Spawn Power-Ups
-            thePlatformGenerator.PowerUpSpawn();
+            theLevelGenerator.PowerUpSpawn();
         }
     }
 
