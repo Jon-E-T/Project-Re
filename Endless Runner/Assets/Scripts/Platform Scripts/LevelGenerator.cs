@@ -120,11 +120,11 @@ public class LevelGenerator : MonoBehaviour
             newCloud.name = "Cloud";
 
             // Cloud Spawn
-            if (thePlayer.transform.position.y >= 5)
+            if (thePlayer.transform.position.y > 6)
             {
                 newCloud.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f) / Random.Range(1f, 10f), Random.Range(6f, 10f), Random.Range(-1, 2));   // Cloud Spawn Height Cap 10
             }
-            else if (thePlayer.transform.position.y < 5)
+            else if (thePlayer.transform.position.y <= 6)
             {
                 newCloud.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f) / Random.Range(1f, 10f), Random.Range(6f, 7.5f), Random.Range(-1, 2));  // Cloud Spawn Height Cap 7.5
             }

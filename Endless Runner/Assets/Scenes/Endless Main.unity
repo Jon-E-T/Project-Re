@@ -425,7 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledObject: {fileID: 1000010195334298, guid: 21fd3ebb5d7df474f8d64f9d6472c27d,
     type: 2}
-  pooledAmount: 10
+  pooledAmount: 5
 --- !u!4 &160303392
 Transform:
   m_ObjectHideFlags: 0
@@ -2322,7 +2322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generationPoint: {fileID: 1635576150}
   cloudPool: {fileID: 108209526}
-  frequencyOfClouds: 15
+  frequencyOfClouds: 30
   distanceBetweenPlatforms: 0
   distanceBetweenPlatformsMin: 5
   distanceBetweenPlatformsMax: 7

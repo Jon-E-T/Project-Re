@@ -6,22 +6,28 @@ public class CloudMovment : MonoBehaviour
     public float cloudMovmentSpeed;
 
 
-    // Find Components
-    private Rigidbody2D myRigidbody2D;
-
-    // Use this for initialization
     void Start()
     {
-        // Find Components
-        myRigidbody2D = GetComponent<Rigidbody2D>();
 
-        // Changes Variables
-        cloudMovmentSpeed -= (cloudMovmentSpeed * 2);    // Changes 'CloudMovmentSpeed' to negative (Moves Cloud Left)
     }
 
-    // Update is called once per frame
+    // This function is called when the object becomes enabled and active
+    public void OnEnable()
+    {
+        // Selects Cloud Movment Direction
+        switch (Random.Range(0, 1))
+        {
+            case 0:
+                cloudMovmentSpeed -= (cloudMovmentSpeed * 2);    // 'CloudMovmentSpeed' Set To Negative
+                break;
+            case 1:
+                cloudMovmentSpeed += (cloudMovmentSpeed * 2);    // 'CloudMovmentSpeed' Set To Positive
+                break; 
+        }
+    }
+
     void FixedUpdate()
     {
-        myRigidbody2D.velocity = new Vector2(cloudMovmentSpeed, myRigidbody2D.velocity.y);
+        transform.Translate(Vector3.left * cloudMovmentSpeed * Time.deltaTime);
     }
 }
