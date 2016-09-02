@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d4fb700f0419a4f8187ba5db9f42bd, type: 3}
+  m_Name: Main Player
+  m_EditorClassIdentifier: 
+  playerName: Main Player
+  playerMovmentSpeed: 11
+  playerJumpForce: 11
+  playerJumpTime: 0.2
+  playerJumpSound: {fileID: 8300000, guid: e0222a7972a1ad748846700a3dbcd5b3, type: 3}
+  playerDeathSound: {fileID: 8300000, guid: 41423f87cdca28d4d98c67811b58bd57, type: 3}

@@ -5,16 +5,17 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     // Objects Measured For Distance
-    public Transform player;
-    public Transform startPoint;
+    public Transform m_Player;
+    //public Transform startPoint;
     // OnScreen Display Text
     public Text scoreText;
     public Text highScoreText;
     // OnScreen Display Text float
     public float scoredDistance;
-    public float highScoredDistance;
-    //-public float pointsPerSecond;
-    public bool canScore;    // Can The Player Score
+    [HideInInspector] public float highScoredDistance;
+    [HideInInspector] public bool canScore;    // Can The Player Score
+    // 'ScoredDistance' Multiplier
+    public float scoredDistanceMultiplier = 1;
 
 
     private float dist;
@@ -46,16 +47,21 @@ public class ScoreManager : MonoBehaviour
 
     void FindDistance()
     {
-        dist = Vector2.Distance(player.position, startPoint.transform.position);
+        //dist = Vector2.Distance(m_Player.position, startPoint.transform.position);
+        dist = m_Player.GetComponent<Rigidbody2D>().velocity.x * Time.deltaTime;
     }
 
     void ScoreCounter()
     {
-        if (canScore || FindObjectOfType<EndlessPlayerController>().moveSpeed > 0)
+        if (canScore || FindObjectOfType<EndlessPlayerController>() != null)
         {
-            // Score Incresses Based On How Far The Player Went
-            // Distance = Time * Speed
-            scoredDistance += dist * Time.deltaTime * FindObjectOfType<EndlessPlayerController>().moveSpeed / 100;
+            // If Plyers Velocity is Grater then 0
+            if (m_Player.GetComponent<Rigidbody2D>().velocity.x > 0)
+            {
+                // Score Incresses Based On How Far The Player Went
+                // Distance = Time * Speed
+                scoredDistance += dist * scoredDistanceMultiplier;
+            }
         }
 
         if (scoredDistance > highScoredDistance)
@@ -69,6 +75,6 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = Mathf.Round(scoredDistance) + "m";    // 'scoreText' is the name of the variable and '.text' edits the text of the variable
 
         // Displays High Score
-        highScoreText.text = "Best " + Mathf.Round(highScoredDistance) + "m";    // 'highScoreText' is the name of the variable and '.text' edits the text of the variable
+        highScoreText.text = "BEST:" + Mathf.Round(highScoredDistance);    // 'highScoreText' is the name of the variable and '.text' edits the text of the variable
     }
 }

@@ -7,7 +7,7 @@ public class EndlessPlayerController : MonoBehaviour
 
     // For Testing 
     public bool godMode;
-    
+
 
     // Basic Movment
     public float moveSpeed;
@@ -16,27 +16,31 @@ public class EndlessPlayerController : MonoBehaviour
     // Advanced Jumping
     public float jumpTime;
     public bool canDoubleJump;
-    public GameObject doubleJumpCloudObject;
     public float doubleJumpCloudTime;
     // Advanced Movment Speed
-    public Transform topOfScreen;         // Find The Top Of The Screen        
     public float speedIncreasePointMultiplier = 2;
     public float increaceSpeedEveryX = 50f;      //  Distance untill speed increase
     public float increaseSpeedAmount;
     // Check For Ground
+    [HideInInspector]
     public bool grounded;
-    public Transform groundCheck;         // GameObject that will check for the layer set in 'LayerMask'
+    public Transform m_GroundCheck;         // GameObject that will check for the layer set in 'LayerMask'
     public float groundCheckRadius;
-    public GameManager theGameManager;    // Uses the scripts from the Game Object "GameManager"
+    // Find Scripts
+    public GameManager m_GameManager;
+    // Find Objects
+    public GameObject doubleJumpCloudObject;
     // Sounds
     public AudioSource jumpSound;         // Place sound objects in script from editor
     public AudioSource deathSound;        // Place sound objects in script from editor
 
 
-    private ScoreManager theScoreManager;
-    private Rigidbody2D myRigidbody;
-    private LevelGenerator theLevelGenerator;
+    // Find Scripts
+    private ScoreManager m_ScoreManager;
+    private LevelGenerator m_LevelGenerator;
+    // Find Components
     private Animator myAnimator;
+    private Rigidbody2D myRigidbody;
     // Advanced Jumping
     private float jumpTimeCounter;
     private bool midJump;
@@ -46,23 +50,19 @@ public class EndlessPlayerController : MonoBehaviour
     private float speedIncreasePoint;
     private float platformIncreaseDistance;
     // Original Variables
-        //Player
+    //Player
     private float originalMoveSpeed;
     private float originalSpeedIncreasePoint;
-        // Platform
+    // Platform
     private float originalPlatformMax;
     private float originalPlatformMin;
 
-
-    void Start()
+    // Awake is called when the script instance is being loaded
+    public void Awake()
     {
-        // Find Scripts
-        theLevelGenerator = FindObjectOfType<LevelGenerator>();
-        theScoreManager = FindObjectOfType<ScoreManager>();
+        // Find Components
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-
-        // Find Object
 
         // Set Variables
         midJump = true;    // Stops Plyer from jumping when falling
@@ -74,23 +74,47 @@ public class EndlessPlayerController : MonoBehaviour
         // Find Original Variables
         originalMoveSpeed = moveSpeed;
         originalSpeedIncreasePoint = speedIncreasePoint;
-        originalPlatformMax = theLevelGenerator.distanceBetweenPlatformsMax;
-        originalPlatformMin = theLevelGenerator.distanceBetweenPlatformsMin;
 
     }
 
-    void Update()
+    void Start()
+    {
+        // Find Scripts
+        m_LevelGenerator = FindObjectOfType<LevelGenerator>();
+        m_ScoreManager = FindObjectOfType<ScoreManager>();
+
+        // Find Object
+
+        //// Set Variables
+        //midJump = true;    // Stops Plyer from jumping when falling
+        //jumpTimeCounter = jumpTime;
+        //doubleJumpCloudTimeCounter = doubleJumpCloudTime;
+        //speedIncreasePoint = increaceSpeedEveryX;
+        //platformIncreaseDistance = increaseSpeedAmount;// -0.1f;
+
+        // Find Original Variables
+        //originalMoveSpeed = moveSpeed;
+        //originalSpeedIncreasePoint = speedIncreasePoint;
+        originalPlatformMax = m_LevelGenerator.distanceBetweenPlatformsMax;
+        originalPlatformMin = m_LevelGenerator.distanceBetweenPlatformsMin;
+
+    }
+
+    void FixedUpdate()
+    {
+
+        // 'grounded' = true if the layer with 'myCollider' and 'whatIsGround' are touching
+        //-grounded = Physics2D.IsTouchingLayers(myCollider , whatIsGround);
+        grounded = Physics2D.OverlapCircle(m_GroundCheck.position, groundCheckRadius, whatIsGround);
+
+        myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);    // "_______.velocity.y" Dosent Change y And Leaves y The Same As It Was
+    }
+
+    public void Update()
     {
         GodModeActive();
 
         SpeedIncreace();
-
-        // 'grounded' = true if the layer with 'myCollider' and 'whatIsGround' are touching
-        //-grounded = Physics2D.IsTouchingLayers(myCollider , whatIsGround);
-        grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-
-
-        myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);    // "_______.velocity.y" Dosent Change y And Leaves y The Same As It Was
 
         PlayerJump();
 
@@ -107,15 +131,19 @@ public class EndlessPlayerController : MonoBehaviour
         {
             Time.timeScale = 0f;
 
+            // Sounds 
             deathSound.Play();
-            // 'theGameManager' Is Using The 'GameManager' Script
-            // 'RestartGame()' Is A Method In 'GameManager' Script
-            theGameManager.RestartGame();
 
+
+            // 'm_GameManager' Is Using The 'GameManager' Script
+            // 'RestartGame()' Is A Method In 'GameManager' Script
+            m_GameManager.RestartGame();
+
+            // Restore Original Variables
             moveSpeed = originalMoveSpeed;
             speedIncreasePoint = originalSpeedIncreasePoint;
-            theLevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
-            theLevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
+            m_LevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
+            m_LevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
         }
     }
 
@@ -129,18 +157,18 @@ public class EndlessPlayerController : MonoBehaviour
 
     void SpeedIncreace()
     {
-        if (theScoreManager.scoredDistance > speedIncreasePoint)
+        if (m_ScoreManager.scoredDistance >= speedIncreasePoint)
         {
             // Player Speed Increase
-            speedIncreasePoint = Mathf.RoundToInt(theScoreManager.scoredDistance) * speedIncreasePointMultiplier + increaceSpeedEveryX;
+            speedIncreasePoint = (Mathf.RoundToInt(m_ScoreManager.scoredDistance) + increaceSpeedEveryX) * speedIncreasePointMultiplier;
             moveSpeed += increaseSpeedAmount;
 
             // Platform Increase
-            theLevelGenerator.distanceBetweenPlatformsMin += platformIncreaseDistance;
-            theLevelGenerator.distanceBetweenPlatformsMax += platformIncreaseDistance;
+            m_LevelGenerator.distanceBetweenPlatformsMin += platformIncreaseDistance;
+            m_LevelGenerator.distanceBetweenPlatformsMax += platformIncreaseDistance;
 
             // Spawn Power-Ups
-            theLevelGenerator.PowerUpSpawn();
+            m_LevelGenerator.PowerUpSpawn();
         }
     }
 
@@ -154,6 +182,8 @@ public class EndlessPlayerController : MonoBehaviour
             {
                 myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
                 midJump = false;    // Stops Plyer from jumping when falling
+
+                // Sounds
                 jumpSound.Play();
             }
 
@@ -227,7 +257,7 @@ public class EndlessPlayerController : MonoBehaviour
 
     public void MovePlayerToTop()
     {
-        transform.position = Vector3.MoveTowards(transform.position, topOfScreen.transform.position, moveSpeed * Time.deltaTime);    // Moves Player To Top Of The Screen
+        transform.position = Vector3.MoveTowards(transform.position, m_LevelGenerator.m_TopOfScreenRight.transform.position, moveSpeed * Time.deltaTime);    // Moves Player To Top Of The Screen
     }
 
     // FOR TESTING ONLY 

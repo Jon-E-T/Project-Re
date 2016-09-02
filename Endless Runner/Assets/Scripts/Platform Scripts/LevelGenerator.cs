@@ -6,11 +6,14 @@ public class LevelGenerator : MonoBehaviour
     // use Prefab GameObject!
     // [] turns any variable into an array
 
+    // Find Screen Points 
+    public Transform m_TopOfScreenRight;         // Find The Top Right Of The Screen
+    // Clouds        
     public Transform generationPoint;
     public ObjectPooler cloudPool;
     public float frequencyOfClouds;
     // Distance Between Platforms
-    public float distanceBetweenPlatforms;
+    [HideInInspector] public float distanceBetweenPlatforms;
     public float distanceBetweenPlatformsMin;
     public float distanceBetweenPlatformsMax;
     // Platform Height Change
@@ -36,12 +39,12 @@ public class LevelGenerator : MonoBehaviour
     private float maxHeight;
     private float heightChange;
     // Find Scripts
-    private CoinGenerator theCoinGen;       // 'CoinGenerator' is a seperat script
-    private EndlessPlayerController theEndlessPlayerController;
-    private PowerUpManager thePowerUpManager;
+    private CoinGenerator m_CoinGen;       // 'CoinGenerator' is a seperat script
+    private EndlessPlayerController m_EndlessPlayerController;
+    private PowerUpManager m_PowerUpManager;
     // Find Objects
-    private GameObject newpowerupHeight;
-    private GameObject thePlayer;
+    private GameObject m_NewPowerupHeight;
+    private GameObject m_Player;
 
     void Start()
     {
@@ -58,12 +61,12 @@ public class LevelGenerator : MonoBehaviour
         maxHeight = maxHeightPoint.position.y;
 
         // Finds Scripts
-        theCoinGen = FindObjectOfType<CoinGenerator>();
-        theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
-        thePowerUpManager = FindObjectOfType<PowerUpManager>();
+        m_CoinGen = FindObjectOfType<CoinGenerator>();
+        m_EndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+        m_PowerUpManager = FindObjectOfType<PowerUpManager>();
 
         // Find Objects
-        thePlayer = GameObject.Find("Player");
+        m_Player = GameObject.Find("Player");
 
     }
 
@@ -120,11 +123,11 @@ public class LevelGenerator : MonoBehaviour
             newCloud.name = "Cloud";
 
             // Cloud Spawn
-            if (thePlayer.transform.position.y > 6)
+            if (m_Player.transform.position.y > 6)
             {
                 newCloud.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f) / Random.Range(1f, 10f), Random.Range(6f, 10f), Random.Range(-1, 2));   // Cloud Spawn Height Cap 10
             }
-            else if (thePlayer.transform.position.y <= 6)
+            else if (m_Player.transform.position.y <= 6)
             {
                 newCloud.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f) / Random.Range(1f, 10f), Random.Range(6f, 7.5f), Random.Range(-1, 2));  // Cloud Spawn Height Cap 7.5
             }
@@ -135,17 +138,17 @@ public class LevelGenerator : MonoBehaviour
 
     public void PowerUpSpawn()
     {
-        if (Random.Range(0f, 100f) < frequencyOfPowerups && !thePowerUpManager.isPowerUpActive)    // Power-Up Spawn Conditions
+        if (Random.Range(0f, 100f) < frequencyOfPowerups && !m_PowerUpManager.isPowerUpActive)    // Power-Up Spawn Conditions
         {
             // Power-Up Spawn Point
             GameObject newPowerUp = powerupPool.GetPooledObject();
             newPowerUp.transform.position = transform.position + new Vector3(distanceBetweenPlatforms / 2f, Random.Range(2f, powerupHeight), 0f);
             newPowerUp.SetActive(true);
-            newpowerupHeight = newPowerUp;
+            m_NewPowerupHeight = newPowerUp;
 
             // Power-Up Spawn Modifiers
             // Power-Up Height
-            if (newpowerupHeight.transform.position.y >= 7.5f)    // Stops Power-Ups From spawning Above The Players FOV
+            if (m_NewPowerupHeight.transform.position.y >= 7)    // Stops Power-Ups From spawning Above The Players FOV
             {
                 newPowerUp.transform.position = new Vector3(transform.position.x, powerupHeightMax, transform.position.z);
             }
@@ -159,16 +162,16 @@ public class LevelGenerator : MonoBehaviour
         if (Random.Range(0f, 100f) < frequencyOfCoins)
         {
             // Gold Coin
-            if (theCoinGen.coinSelector == 0)
+            if (m_CoinGen.coinSelector == 0)
             {
                 // 'SpawnCoins' is a method from 'CoinGenerator' script
-                theCoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z));
+                m_CoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z));
             }
             // Bronze Coins
-            //else if (theCoinGen.coinSelector == 1)
+            //else if (m_CoinGen.coinSelector == 1)
             //{
             //    // 'SpawnCoins' is a method from 'CoinGenerator' script
-            //    theCoinGen.SpawnCoins(new Vector3(transform.position.x + Random.Range(-3,3), transform.position.y + 1f, transform.position.z));
+            //    m_CoinGen.SpawnCoins(new Vector3(transform.position.x + Random.Range(-3,3), transform.position.y + 1f, transform.position.z));
             //}
         }
 

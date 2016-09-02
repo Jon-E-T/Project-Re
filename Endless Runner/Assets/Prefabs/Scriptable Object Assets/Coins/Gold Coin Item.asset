@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d58c71153d6b11f45a14a5155e57b071, type: 3}
+  m_Name: Gold Coin Item
+  m_EditorClassIdentifier: 
+  coinName: Gold Coin
+  coinSprite: {fileID: 21300032, guid: e2a61e8c02de5784199b3c6ff0e24007, type: 3}
+  coinColor: {r: 1, g: 1, b: 1, a: 1}
+  coinValue: 5
+  coinSound: {fileID: 8300000, guid: e56e387f67d784e4d97f751836c1c3a6, type: 3}

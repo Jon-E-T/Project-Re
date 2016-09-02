@@ -4,15 +4,17 @@ using System.Collections;
 public class PowerUpManager : MonoBehaviour
 {
     // Copied From 'PowerUps' Script
-    private bool playerFlying;
-    private bool noSpikes;
-    private float powerUpActiveTime;
+    private bool playerFlightBool;
+    private bool noSpikesBool;
+    private float currentPowerUpActiveTime;
     // Not Copied
-    public bool isPowerUpActive;
+    // Is The Power-Up Active
+    [HideInInspector] public bool isPowerUpActive;
     // Find Scripts
-    private ScoreManager theScoreManager;
-    private LevelGenerator theLevelGenerator;
-    private EndlessPlayerController theEndlessPlayerController;
+    private ScoreManager m_ScoreManager;
+    private LevelGenerator m_LevelGenerator;
+    private EndlessPlayerController m_EndlessPlayerController;
+    private PowerUps m_PowerUps;
     // Original Variables 
     private float originalSpikeFrequency;
     private float originalMoveSpeed;
@@ -29,25 +31,26 @@ public class PowerUpManager : MonoBehaviour
     private bool playSounds;
     private AudioSource powerupPlayerFlySound;
     private AudioSource powerupNoSpikesSound;
-
+    
 
     void Start()
     {
         // Find Scripts
-        theScoreManager = FindObjectOfType<ScoreManager>();
-        theLevelGenerator = FindObjectOfType<LevelGenerator>();
-        theEndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+        m_ScoreManager = FindObjectOfType<ScoreManager>();
+        m_LevelGenerator = FindObjectOfType<LevelGenerator>();
+        m_EndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+        m_PowerUps = FindObjectOfType<PowerUps>();
 
         // Find Objects
         player = GameObject.Find("Player");
-        powerupPlayerFlySound = GameObject.Find("PlayerFly Sound").GetComponent<AudioSource>();
-        powerupNoSpikesSound = GameObject.Find("NoSpikes Sound").GetComponent<AudioSource>();
+        //powerupPlayerFlySound = GameObject.Find("PlayerFly Sound").GetComponent<AudioSource>();
+        //powerupNoSpikesSound = GameObject.Find("NoSpikes Sound").GetComponent<AudioSource>();
 
         // Find Original Variables
             // Platforms
-        originalPlatformMax = theLevelGenerator.distanceBetweenPlatformsMax;
-        originalPlatformMin = theLevelGenerator.distanceBetweenPlatformsMin;
-        originalPlatformHeightChange = theLevelGenerator.maxHeightChange;
+        originalPlatformMax = m_LevelGenerator.distanceBetweenPlatformsMax;
+        originalPlatformMin = m_LevelGenerator.distanceBetweenPlatformsMin;
+        originalPlatformHeightChange = m_LevelGenerator.maxHeightChange;
             // World
         originalGravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
 
@@ -58,13 +61,14 @@ public class PowerUpManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (isPowerUpActive)
         {
-            powerUpActiveTime -= Time.deltaTime;
+            currentPowerUpActiveTime -= Time.deltaTime;
 
             FlyingPlayer();
 
-            NoSpikesPowerUp();
+            noSpikesBoolPowerUp();
 
             DisablePowerUps();
         }
@@ -72,93 +76,89 @@ public class PowerUpManager : MonoBehaviour
 
     public void ActivatePowerUp(bool pFly, bool nSpikes, float pUpActiveTime)
     {
-        playerFlying = pFly;
-        noSpikes = nSpikes;
-        powerUpActiveTime = pUpActiveTime;
+        playerFlightBool = pFly;
+        noSpikesBool = nSpikes;
+        currentPowerUpActiveTime = pUpActiveTime;
 
-        originalMoveSpeed = theEndlessPlayerController.moveSpeed;
+        originalMoveSpeed = m_EndlessPlayerController.moveSpeed;
 
-        originalSpikeFrequency = theLevelGenerator.frequencyOfSpikes;
+        originalSpikeFrequency = m_LevelGenerator.frequencyOfSpikes;
 
         isPowerUpActive = true;
     }
 
     void FlyingPlayer()
     {
-        if (playerFlying)
+        if (playerFlightBool)
         {
-            theEndlessPlayerController.MovePlayerToTop();    // Moves Player To Top Of The Screen
+            m_EndlessPlayerController.MovePlayerToTop();    // Moves Player To Top Of The Screen
 
             // Changes To Player
             player.GetComponent<Rigidbody2D>().gravityScale = 0;
-            //theEndlessPlayerController.moveSpeed = originalMoveSpeed;
+            //m_EndlessPlayerController.moveSpeed = originalMoveSpeed;
             player.GetComponent<BoxCollider2D>().isTrigger = true;
-            theEndlessPlayerController.canDoubleJump = false;
-            player.GetComponent<Rigidbody2D>().velocity = new Vector3(theEndlessPlayerController.moveSpeed, 0f, 0f);
+            m_EndlessPlayerController.canDoubleJump = false;
+            player.GetComponent<Rigidbody2D>().velocity = new Vector3(m_EndlessPlayerController.moveSpeed, 0f, 0f);
 
             // Changes To Platforms
-            theLevelGenerator.distanceBetweenPlatformsMax = 0;
-            theLevelGenerator.distanceBetweenPlatformsMin = 0;
-            theLevelGenerator.maxHeightChange = 0;
+            m_LevelGenerator.distanceBetweenPlatformsMax = 0;
+            m_LevelGenerator.distanceBetweenPlatformsMin = 0;
+            m_LevelGenerator.maxHeightChange = 0;
+
+            // Removes Spikes
+            SpikeDeSpawner();
 
             // Sound
-            if (playSounds == true)
-            {
-                powerupPlayerFlySound.Play();
-                playSounds = false;
-            }
+            //if (playSounds == true)
+            //{
+            //    powerupPlayerFlySound.Play();
+            //    playSounds = false;
+            //}
 
-            PowerUpDeSpawner();    // DeSpawns Power-Ups
+            //PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 
-    void NoSpikesPowerUp()
+    void noSpikesBoolPowerUp()
     {
-        if (noSpikes)
+        if (noSpikesBool)
         {
-            theLevelGenerator.frequencyOfSpikes = 0;
+            m_LevelGenerator.frequencyOfSpikes = 0;
 
-            // Spike DeSpawner
-            spikeList = FindObjectsOfType<ObjectDestroyer>();
-            for (int i = 0; i < spikeList.Length; i++)
-            {
-                if (spikeList[i].gameObject.name.Contains("Spikes"))
-                {
-                    spikeList[i].gameObject.SetActive(false);
-                }
-            }
+            SpikeDeSpawner();
 
-            // Sound
-            if (playSounds)
-            {
-                powerupNoSpikesSound.Play();
-                playSounds = false;
-            }
+            //// Sound
+            //if (playSounds)
+            //{
+            //    powerupNoSpikesSound.Play();
+            //    playSounds = false;
+            //}
 
-            PowerUpDeSpawner();    // DeSpawns Power-Ups
+            //PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 
     void DisablePowerUps()
     {
-        if (powerUpActiveTime <= 0 || !theScoreManager.canScore)
+        // Turns Off Current Enabled Power-Up
+        if (currentPowerUpActiveTime <= 0 || !m_ScoreManager.canScore)
         {
-            if (playerFlying)
+            if (playerFlightBool)
             {
                 // Changes To Player
                 player.GetComponent<BoxCollider2D>().isTrigger = false;
                 player.GetComponent<Rigidbody2D>().gravityScale = originalGravityScale;
-                //theEndlessPlayerController.moveSpeed = originalMoveSpeed;
+                //m_EndlessPlayerController.moveSpeed = originalMoveSpeed;
 
                 // Changes To Platforms
-                theLevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
-                theLevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
-                theLevelGenerator.maxHeightChange = originalPlatformHeightChange;
+                m_LevelGenerator.distanceBetweenPlatformsMax = originalPlatformMax;
+                m_LevelGenerator.distanceBetweenPlatformsMin = originalPlatformMin;
+                m_LevelGenerator.maxHeightChange = originalPlatformHeightChange;
             }
 
-            if (noSpikes)
+            if (noSpikesBool)
             {
-                theLevelGenerator.frequencyOfSpikes = originalSpikeFrequency;
+                m_LevelGenerator.frequencyOfSpikes = originalSpikeFrequency;
             }
 
             playSounds = true;
@@ -168,13 +168,26 @@ public class PowerUpManager : MonoBehaviour
 
     void PowerUpDeSpawner()
     {
-        //Power-Up DeSpwaner
+        // Remove Current Power-Ups
         powerupList = FindObjectsOfType<ObjectDestroyer>();
         for (int i = 0; i < powerupList.Length; i++)
         {
             if (powerupList[i].gameObject.name.Contains("Power-Up"))
             {
                 powerupList[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void SpikeDeSpawner()
+    {
+        // Remove Current Spikes
+        spikeList = FindObjectsOfType<ObjectDestroyer>();
+        for (int i = 0; i < spikeList.Length; i++)
+        {
+            if (spikeList[i].gameObject.name.Contains("Spikes"))
+            {
+                spikeList[i].gameObject.SetActive(false);
             }
         }
     }

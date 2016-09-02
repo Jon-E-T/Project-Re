@@ -9,8 +9,10 @@ public class CameraController : MonoBehaviour
     /// Or  Selected Object
     /// </summary>
 
+    // ReRunner Size 10 / FOV 90
+    
     // Rename To Script With Object I Want To Follow
-    public EndlessPlayerController thePlayer;
+    public EndlessPlayerController m_Player;
 
     private Vector3 lastPlayerPosition;
     private float distianceToMove;
@@ -21,35 +23,35 @@ public class CameraController : MonoBehaviour
         CameraFollowObjectSelector();
     }
 
-    void Update()
+    void LateUpdate()
     {
         CameraFollow();
     }
 
     void CameraFollowObjectSelector()
     {
-        thePlayer = FindObjectOfType<EndlessPlayerController>();
-        lastPlayerPosition = thePlayer.transform.position;
+        //m_Player = FindObjectOfType<EndlessPlayerController>();
+        lastPlayerPosition = m_Player.transform.position;
     }
 
     void CameraFollow()
     {
         // Follows X Axis Disable To Stop Following X
-        distianceToMove = thePlayer.transform.position.x - lastPlayerPosition.x;
+        distianceToMove = m_Player.transform.position.x - lastPlayerPosition.x;
 
         // Follows Y Axis Disable To Stop Following Y
-        distanceToMoveUp = thePlayer.transform.position.y - lastPlayerPosition.y;
+        distanceToMoveUp = m_Player.transform.position.y - lastPlayerPosition.y;
 
-        if (thePlayer.transform.position.y > 7.5 || (thePlayer.transform.position.y < -4 && thePlayer.transform.position.y > -6))
+        if (m_Player.transform.position.y > 7.5 || (m_Player.transform.position.y < -4 && m_Player.transform.position.y > -6))
         {
             MoveCameraYAxis();
         }
-        else if (thePlayer.transform.position.y < 7.5)
+        else if (m_Player.transform.position.y < 7.5)
         {
             MoveCameraXAxis();
         }
 
-        lastPlayerPosition = thePlayer.transform.position;
+        lastPlayerPosition = m_Player.transform.position;
     }
 
     // Moves Camera X And Y Axis

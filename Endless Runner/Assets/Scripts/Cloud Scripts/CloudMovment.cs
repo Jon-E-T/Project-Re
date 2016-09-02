@@ -22,7 +22,7 @@ public class CloudMovment : MonoBehaviour
                 break;
             case 1:
                 cloudMovmentSpeed += (cloudMovmentSpeed * 2);    // 'CloudMovmentSpeed' Set To Positive
-                break; 
+                break;
         }
     }
 
