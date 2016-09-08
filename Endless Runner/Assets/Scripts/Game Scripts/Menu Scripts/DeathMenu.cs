@@ -13,12 +13,4 @@ public class DeathMenu : MonoBehaviour
         FindObjectOfType<GameManager>().Reset();
     }
 
-    public void QuitToMain()
-    {
-        Time.timeScale = 1f;
-
-        // I can also use a Varriable instad of a literal "__" String
-        // the Variable can ba changed and updated at any time unlike a literal "___" string
-        SceneManager.LoadScene("Main Menu");
-    }
 }

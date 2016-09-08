@@ -6,11 +6,6 @@ public class CloudMovment : MonoBehaviour
     public float cloudMovmentSpeed;
 
 
-    void Start()
-    {
-
-    }
-
     // This function is called when the object becomes enabled and active
     public void OnEnable()
     {

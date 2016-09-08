@@ -31,7 +31,6 @@ public class PowerUps : MonoBehaviour
         playPowerupAudio = GetComponent<AudioSource>();
     }
 
-    // This function is called when the object becomes enabled and active
     public void OnEnable()
     {
         // Turns On Sprite
@@ -78,7 +77,6 @@ public class PowerUps : MonoBehaviour
         currentPowerupSound = myPowerupObjects[currentPowerupPicker].powerupSound;
     }
 
-    // OnTriggerEnter2D is called when the Collider2D other enters the trigger (2D physics only)
     public void OnTriggerEnter2D(Collider2D collision)
     {
         // Audio
@@ -97,7 +95,6 @@ public class PowerUps : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // OnTriggerExit2D is called when the Collider2D other has stopped touching the trigger (2D physics only)
     public void OnTriggerExit2D(Collider2D collision)
     {
         // Checks if touching a gameObject that has the name "Player"

@@ -4,11 +4,17 @@ using System.Collections.Generic;
 
 public class ObjectPooler : MonoBehaviour
 {
-    // use Prefab GameObject!
+    public static ObjectPooler current;
+    // Use Prefab GameObject!
     public GameObject pooledObject;
     public int pooledAmount;
 
     List<GameObject> pooledListObjects;
+
+    public void Awake()
+    {
+        current = this;
+    }
 
     void Start()
     {
@@ -33,8 +39,8 @@ public class ObjectPooler : MonoBehaviour
         }
 
         GameObject obj = Instantiate(pooledObject);
-        obj.SetActive(false);
         pooledListObjects.Add(obj);
+        obj.SetActive(false);
         return obj;
     }
 }

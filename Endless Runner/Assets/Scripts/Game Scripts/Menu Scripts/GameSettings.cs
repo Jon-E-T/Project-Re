@@ -4,13 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class GameSettings : MonoBehaviour
 {
-    public void ResetPlayerHighScore()
+    public void Awake()
     {
-        PlayerPrefs.SetFloat("HighScore", 0);
-    }
-
-    public void ReturnToMenu()
-    {
-        SceneManager.LoadScene("Main Menu");
+#if (UNITY_IOS || UNITY_ANDROID)
+        Application.targetFrameRate = 60;
+#else
+        Application.targetFrameRate = -1;
+#endif
     }
 }

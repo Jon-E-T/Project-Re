@@ -11,12 +11,6 @@ public class AspectRatioScaler : MonoBehaviour
         AutoAspect();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void AutoAspect()
     {
         Cursor.visible = false;

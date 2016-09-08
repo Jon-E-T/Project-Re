@@ -9,11 +9,6 @@ public class UserInput : MonoBehaviour
     public GameObject deathScreen;
     public GameObject pauseButtonToggle;
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         PauseOnEscapePress();

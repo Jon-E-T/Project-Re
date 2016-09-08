@@ -12,13 +12,13 @@ public class CoinPickUps : MonoBehaviour
 
     void Start()
     {
-        // Finds the 'ScoreManager' script and its public variables
+        // Find Scripts
         m_ScoreManager = FindObjectOfType<ScoreManager>();
-        // Finds GameObject ("NameOfGameObject") then Gets the AudioSurce Component
+
+        // Find Audio
         coinPickUpSound = GameObject.Find("Coin Sound").GetComponent<AudioSource>();
     }
 
-    // 'other' is the is a name for when this collider and other colliders touch 
     void OnTriggerEnter2D(Collider2D other)
     {
         // Checks if 'Collider2D' is touching a gameObject that has the name "Player"
@@ -35,10 +35,7 @@ public class CoinPickUps : MonoBehaviour
                 coinPickUpSound.Play();
             }
 
-            // m_ScoreManager is refering to the 'ScoreManager' scrip
-            // '.AddToScore' is a calling method in that script
-            // '(scoreFormCoin)' on this script replaces '(pointsToAdd)' in the 'ScoreManager' script
-            m_ScoreManager.AddToScore(scoreFromCoin);
+            m_ScoreManager.AddToCoins(scoreFromCoin);    // Adds Coins To Score
             gameObject.SetActive(false);
         }
     }

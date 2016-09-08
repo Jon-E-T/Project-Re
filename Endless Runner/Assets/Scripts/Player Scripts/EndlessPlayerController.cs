@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class EndlessPlayerController : MonoBehaviour
 {
@@ -22,8 +21,7 @@ public class EndlessPlayerController : MonoBehaviour
     public float increaceSpeedEveryX = 50f;      //  Distance untill speed increase
     public float increaseSpeedAmount;
     // Check For Ground
-    [HideInInspector]
-    public bool grounded;
+    [HideInInspector] public bool grounded;
     public Transform m_GroundCheck;         // GameObject that will check for the layer set in 'LayerMask'
     public float groundCheckRadius;
     // Find Scripts
@@ -51,7 +49,7 @@ public class EndlessPlayerController : MonoBehaviour
     private float platformIncreaseDistance;
     // Original Variables
     //Player
-    private float originalMoveSpeed;
+    [HideInInspector] public float originalMoveSpeed;
     private float originalSpeedIncreasePoint;
     // Platform
     private float originalPlatformMax;
@@ -69,7 +67,7 @@ public class EndlessPlayerController : MonoBehaviour
         jumpTimeCounter = jumpTime;
         doubleJumpCloudTimeCounter = doubleJumpCloudTime;
         speedIncreasePoint = increaceSpeedEveryX;
-        platformIncreaseDistance = increaseSpeedAmount;// -0.1f;
+        platformIncreaseDistance = increaseSpeedAmount;
 
         // Find Original Variables
         originalMoveSpeed = moveSpeed;
@@ -85,16 +83,7 @@ public class EndlessPlayerController : MonoBehaviour
 
         // Find Object
 
-        //// Set Variables
-        //midJump = true;    // Stops Plyer from jumping when falling
-        //jumpTimeCounter = jumpTime;
-        //doubleJumpCloudTimeCounter = doubleJumpCloudTime;
-        //speedIncreasePoint = increaceSpeedEveryX;
-        //platformIncreaseDistance = increaseSpeedAmount;// -0.1f;
-
-        // Find Original Variables
-        //originalMoveSpeed = moveSpeed;
-        //originalSpeedIncreasePoint = speedIncreasePoint;
+        // Set Variables
         originalPlatformMax = m_LevelGenerator.distanceBetweenPlatformsMax;
         originalPlatformMin = m_LevelGenerator.distanceBetweenPlatformsMin;
 
@@ -103,8 +92,6 @@ public class EndlessPlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
-        // 'grounded' = true if the layer with 'myCollider' and 'whatIsGround' are touching
-        //-grounded = Physics2D.IsTouchingLayers(myCollider , whatIsGround);
         grounded = Physics2D.OverlapCircle(m_GroundCheck.position, groundCheckRadius, whatIsGround);
 
         myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);    // "_______.velocity.y" Dosent Change y And Leaves y The Same As It Was
@@ -113,17 +100,12 @@ public class EndlessPlayerController : MonoBehaviour
     public void Update()
     {
         GodModeActive();
-
         SpeedIncreace();
-
         PlayerJump();
-
         PlayerDoubleJumpCloud();
-
         AnimationConditions();
     }
 
-    // other is the name for any collision 
     void OnCollisionEnter2D(Collision2D other)
     {
         // Player death

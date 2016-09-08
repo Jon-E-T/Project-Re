@@ -9,17 +9,18 @@ public class LevelGenerator : MonoBehaviour
     // Find Screen Points 
     public Transform m_TopOfScreenRight;         // Find The Top Right Of The Screen
     // Clouds        
-    public Transform generationPoint;
+    public Transform m_PlatformGenerationPoint;
     public ObjectPooler cloudPool;
     public float frequencyOfClouds;
     // Distance Between Platforms
-    [HideInInspector] public float distanceBetweenPlatforms;
+    [HideInInspector]
+    public float distanceBetweenPlatforms;
     public float distanceBetweenPlatformsMin;
     public float distanceBetweenPlatformsMax;
     // Platform Height Change
     public Transform maxHeightPoint;
     public float maxHeightChange;
-    public ObjectPooler[] theObjectPool;    // 'ObjectPool' is a seperat script 
+    public ObjectPooler[] m_PlatformPool;    // 'ObjectPool' is a seperat script 
     // Coins
     public float frequencyOfCoins;
     // Spikes
@@ -49,11 +50,11 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         // '.Length' finds the number thePltform is set to automaticly
-        platformWidth = new float[theObjectPool.Length];
-        for (int i = 0; i < theObjectPool.Length; i++)
+        platformWidth = new float[m_PlatformPool.Length];
+        for (int i = 0; i < m_PlatformPool.Length; i++)
         {
             // '.pooledObject' is from objectPooler script
-            platformWidth[i] = theObjectPool[i].pooledObject.GetComponent<BoxCollider2D>().size.x;
+            platformWidth[i] = m_PlatformPool[i].pooledObject.GetComponent<BoxCollider2D>().size.x;
         }
 
         // Set Variables
@@ -72,13 +73,13 @@ public class LevelGenerator : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.x < generationPoint.position.x)
+        if (transform.position.x < m_PlatformGenerationPoint.position.x)
         {
             distanceBetweenPlatforms = Random.Range(distanceBetweenPlatformsMin, distanceBetweenPlatformsMax);
 
-            // platformSelector is a private int, the picks from a number Random Range of numbers between 0 and whatever number theObjectPool is set to
+            // platformSelector is a private int, the picks from a number Random Range of numbers between 0 and whatever number m_PlatformPool is set to
             // '.Length' finds the number 'thePltform' is set to automaticly
-            platformSelector = Random.Range(0, theObjectPool.Length);
+            platformSelector = Random.Range(0, m_PlatformPool.Length);
 
             heightChange = transform.position.y + Random.Range(maxHeightChange, -maxHeightChange);
             if (heightChange > maxHeight)
@@ -94,11 +95,7 @@ public class LevelGenerator : MonoBehaviour
 
             transform.position = new Vector3(transform.position.x + (platformWidth[platformSelector] / 2) + distanceBetweenPlatforms, heightChange, transform.position.z);
 
-            // Instantiate Copy and paste whatever GameObject is in "public GameObject thePlarform;"
-            // '[platformSelector]' from the Random Range already detrmied by the "platformSelector = Random.Range(0, thePlatform.Length);" code above
-            //-Instantiate(thePlatform[platformSelector], transform.position, transform.rotation);
-
-            GameObject newPlatform = theObjectPool[platformSelector].GetPooledObject();
+            GameObject newPlatform = m_PlatformPool[platformSelector].GetPooledObject();
             newPlatform.transform.position = transform.position;
             newPlatform.transform.rotation = transform.rotation;
             newPlatform.SetActive(true);
@@ -162,17 +159,7 @@ public class LevelGenerator : MonoBehaviour
         if (Random.Range(0f, 100f) < frequencyOfCoins)
         {
             // Gold Coin
-            if (m_CoinGen.coinSelector == 0)
-            {
-                // 'SpawnCoins' is a method from 'CoinGenerator' script
-                m_CoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z));
-            }
-            // Bronze Coins
-            //else if (m_CoinGen.coinSelector == 1)
-            //{
-            //    // 'SpawnCoins' is a method from 'CoinGenerator' script
-            //    m_CoinGen.SpawnCoins(new Vector3(transform.position.x + Random.Range(-3,3), transform.position.y + 1f, transform.position.z));
-            //}
+            m_CoinGen.SpawnCoins(new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z));
         }
 
     }

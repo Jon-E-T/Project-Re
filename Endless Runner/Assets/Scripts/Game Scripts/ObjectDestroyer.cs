@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ObjectDestroyer : MonoBehaviour
 {
-    public GameObject destructionPoint;
+    private GameObject destructionPoint;
 
     void Start()
     {
@@ -14,7 +14,6 @@ public class ObjectDestroyer : MonoBehaviour
     {
         if (transform.position.x < destructionPoint.transform.position.x)
         {
-            //-Destroy(gameObject);
             gameObject.SetActive(false);
         }
     }

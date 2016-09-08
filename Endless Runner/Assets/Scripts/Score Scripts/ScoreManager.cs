@@ -6,15 +6,23 @@ public class ScoreManager : MonoBehaviour
 {
     // Objects Measured For Distance
     public Transform m_Player;
-    //public Transform startPoint;
     // OnScreen Display Text
     public Text scoreText;
     public Text highScoreText;
-    // OnScreen Display Text float
-    public float scoredDistance;
-    [HideInInspector] public float highScoredDistance;
-    [HideInInspector] public bool canScore;    // Can The Player Score
-    // 'ScoredDistance' Multiplier
+    public Text coinCountText;
+    // Score
+    public float scoredDistance;    // Current Distance The Player Went
+    // Coins
+    [HideInInspector]
+    public int currentAmountOfCoins;    // Coins Player Currently Has
+    // Player Prefs
+    [HideInInspector]
+    public float highScoredDistance;
+    [HideInInspector]
+    public int playerCoins;
+    // bools
+    [HideInInspector]
+    public bool canScore;    // Can The Player Score
     public float scoredDistanceMultiplier = 1;
 
 
@@ -23,11 +31,23 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefsRetrever();
+    }
+
+    // Finds Player Prefs
+    void PlayerPrefsRetrever()
+    {
         // Retrieves the Players High Score
         if (PlayerPrefs.HasKey("HighScore"))
         {
             highScoredDistance = PlayerPrefs.GetFloat("HighScore");
             // To Delete High Score ste 'PlayerPrefs'-("HighScore") to 0
+        }
+
+        // Retrieves the Players Coins
+        if (PlayerPrefs.HasKey("CoinScore"))
+        {
+            playerCoins = PlayerPrefs.GetInt("CoinScore");    // Sets 'playerCoins' To What Ever Was Saved
         }
     }
 
@@ -35,14 +55,21 @@ public class ScoreManager : MonoBehaviour
     {
         FindDistance();
         ScoreCounter();
+        CoinCouner();
     }
 
-    // Whatever is the brackets of AddToScore(___); when calling a method will replace pointsToAdd
     public void AddToScore(int pointsToAdd)
     {
         scoredDistance += pointsToAdd;
         if (scoredDistance < 0)
             scoredDistance = 0;
+    }
+
+    public void AddToCoins(int coinsToAdd)
+    {
+        currentAmountOfCoins += coinsToAdd;
+        if (currentAmountOfCoins < 0)
+            currentAmountOfCoins = 0;
     }
 
     void FindDistance()
@@ -53,7 +80,7 @@ public class ScoreManager : MonoBehaviour
 
     void ScoreCounter()
     {
-        if (canScore || FindObjectOfType<EndlessPlayerController>() != null)
+        if (canScore || FindObjectOfType<EndlessPlayerController>() != null)    // Can The Player Score?
         {
             // If Plyers Velocity is Grater then 0
             if (m_Player.GetComponent<Rigidbody2D>().velocity.x > 0)
@@ -76,5 +103,16 @@ public class ScoreManager : MonoBehaviour
 
         // Displays High Score
         highScoreText.text = "BEST:" + Mathf.Round(highScoredDistance);    // 'highScoreText' is the name of the variable and '.text' edits the text of the variable
+    }
+
+    void CoinCouner()
+    {
+        if (playerCoins > currentAmountOfCoins)
+        {
+            PlayerPrefs.SetInt("CoinScore", currentAmountOfCoins);
+        }
+
+        // Display Coin #
+        coinCountText.text = currentAmountOfCoins + " COINS";
     }
 }
