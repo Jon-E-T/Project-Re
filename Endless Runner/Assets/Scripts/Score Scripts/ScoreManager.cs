@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
     // Score
     public float scoredDistance;    // Current Distance The Player Went
     // Coins
-    [HideInInspector]
+    //[HideInInspector]
     public int currentAmountOfCoins;    // Coins Player Currently Has
     // Player Prefs
     [HideInInspector]
@@ -113,6 +113,6 @@ public class ScoreManager : MonoBehaviour
         }
 
         // Display Coin #
-        coinCountText.text = currentAmountOfCoins + " COINS";
+        coinCountText.text = currentAmountOfCoins.ToString();
     }
 }

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01a5f9e5f678574b8f3d986934571ac, type: 3}
+  m_Name: Platform Config Sand
+  m_EditorClassIdentifier: 
+  platformName: Sand Platforms
+  platformPrefabs:
+  - {fileID: 1000012640860592, guid: bb494118e0c095048b72c5ee65da97b3, type: 2}
+  - {fileID: 1000010655006060, guid: d1008ddbadfe35a4eb0f480fb345495a, type: 2}
+  - {fileID: 1000010103122174, guid: 41c5a41fa9fb00c4ab098544f2fdecbc, type: 2}
+  platformColor: {r: 0, g: 0, b: 0, a: 0}
+  physicMaterial2D: {fileID: 0}

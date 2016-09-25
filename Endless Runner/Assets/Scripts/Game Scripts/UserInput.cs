@@ -15,7 +15,7 @@ public class UserInput : MonoBehaviour
 
         OnScreenPauseButtonToggle();
 
-        MouseCursorToggle();
+        //MouseCursorToggle();
     }
 
     void OnScreenPauseButtonToggle()
@@ -43,16 +43,16 @@ public class UserInput : MonoBehaviour
         }
     }
 
-    void MouseCursorToggle()
-    {
-        OnScreenPauseButtonToggle();
-        if (Time.timeScale == 0)
-        {
-            Cursor.visible = true;
-        }
-        else if (Time.timeScale > 0)
-        {
-            Cursor.visible = false;
-        }
-    }
+    //void MouseCursorToggle()
+    //{
+    //    OnScreenPauseButtonToggle();
+    //    if (Time.timeScale == 0)
+    //    {
+    //        Cursor.visible = true;
+    //    }
+    //    else if (Time.timeScale > 0)
+    //    {
+    //        Cursor.visible = false;
+    //    }
+    //}
 }

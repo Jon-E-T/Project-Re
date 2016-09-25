@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         Debug.LogWarning("Editor Mode PlayerPrefs Deleted");
 #elif !UNITY_EDITOR
-        PlayerPrefs.DeleteAll();
         Debug.LogError("Not Editor");
 #endif
 

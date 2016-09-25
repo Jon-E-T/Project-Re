@@ -5,7 +5,7 @@ using System.Collections;
 public class PlatformConfigData : ScriptableObject
 {
     public string platformName;
-    public Sprite platformSprite;
+    public GameObject[] platformPrefabs;
     public Color platformColor;
     public PhysicsMaterial2D physicMaterial2D;
 }

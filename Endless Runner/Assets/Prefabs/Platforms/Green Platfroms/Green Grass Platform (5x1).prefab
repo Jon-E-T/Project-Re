@@ -101,6 +101,7 @@ GameObject:
   - 4: {fileID: 4000012576464304}
   - 61: {fileID: 61000014154189370}
   - 114: {fileID: 114000012682477286}
+  - 114: {fileID: 114000010051752642}
   m_Layer: 15
   m_Name: Green Grass Platform (5x1)
   m_TagString: Untagged
@@ -205,6 +206,17 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 5, y: 1}
+--- !u!114 &114000010051752642
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013653099242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32037e88e7a82e54280d57a00d054c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000012682477286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -216,7 +228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79a8648958020b4d92048ec43ec67b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionPoint: {fileID: 0}
 --- !u!212 &212000010520066646
 SpriteRenderer:
   m_ObjectHideFlags: 1

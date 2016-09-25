@@ -3,6 +3,11 @@ using System.Collections;
 
 public class PowerUpManager : MonoBehaviour
 {
+    // Sounds
+    public AudioSource powerupPlayerFlySound;
+    public AudioSource powerupNoSpikesSound;
+
+
     // Copied From 'PowerUps' Script
     private bool playerFlightBool;
     private bool noSpikesBool;
@@ -14,6 +19,7 @@ public class PowerUpManager : MonoBehaviour
     private ScoreManager m_ScoreManager;
     private LevelGenerator m_LevelGenerator;
     private EndlessPlayerController m_EndlessPlayerController;
+    private PlayerJumpController m_PlayerJumpController;
     private PowerUps m_PowerUps;
     // Original Variables 
     private float originalSpikeFrequency;
@@ -29,8 +35,6 @@ public class PowerUpManager : MonoBehaviour
     private ObjectDestroyer[] powerupList;
     // Sounds
     private bool playSounds;
-    private AudioSource powerupPlayerFlySound;
-    private AudioSource powerupNoSpikesSound;
     
 
     void Start()
@@ -39,12 +43,11 @@ public class PowerUpManager : MonoBehaviour
         m_ScoreManager = FindObjectOfType<ScoreManager>();
         m_LevelGenerator = FindObjectOfType<LevelGenerator>();
         m_EndlessPlayerController = FindObjectOfType<EndlessPlayerController>();
+        m_PlayerJumpController = FindObjectOfType<PlayerJumpController>();
         m_PowerUps = FindObjectOfType<PowerUps>();
 
         // Find Objects
         player = GameObject.Find("Player");
-        //powerupPlayerFlySound = GameObject.Find("PlayerFly Sound").GetComponent<AudioSource>();
-        //powerupNoSpikesSound = GameObject.Find("NoSpikes Sound").GetComponent<AudioSource>();
 
         // Find Original Variables
             // Platforms
@@ -97,7 +100,7 @@ public class PowerUpManager : MonoBehaviour
             player.GetComponent<Rigidbody2D>().gravityScale = 0;
             //m_EndlessPlayerController.moveSpeed = originalMoveSpeed;
             player.GetComponent<BoxCollider2D>().isTrigger = true;
-            m_EndlessPlayerController.canDoubleJump = false;
+            m_PlayerJumpController.canDoubleJump = false;
             player.GetComponent<Rigidbody2D>().velocity = new Vector3(m_EndlessPlayerController.moveSpeed, 0f, 0f);
 
             // Changes To Platforms
@@ -109,13 +112,13 @@ public class PowerUpManager : MonoBehaviour
             SpikeDeSpawner();
 
             // Sound
-            //if (playSounds == true)
-            //{
-            //    powerupPlayerFlySound.Play();
-            //    playSounds = false;
-            //}
+            if (playSounds == true)
+            {
+                powerupPlayerFlySound.Play();
+                playSounds = false;
+            }
 
-            //PowerUpDeSpawner();    // DeSpawns Power-Ups
+            PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 
@@ -128,13 +131,13 @@ public class PowerUpManager : MonoBehaviour
             SpikeDeSpawner();
 
             //// Sound
-            //if (playSounds)
-            //{
-            //    powerupNoSpikesSound.Play();
-            //    playSounds = false;
-            //}
+            if (playSounds)
+            {
+                powerupNoSpikesSound.Play();
+                playSounds = false;
+            }
 
-            //PowerUpDeSpawner();    // DeSpawns Power-Ups
+            PowerUpDeSpawner();    // DeSpawns Power-Ups
         }
     }
 

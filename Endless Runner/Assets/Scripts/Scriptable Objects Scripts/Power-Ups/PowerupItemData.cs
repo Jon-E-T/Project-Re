@@ -9,7 +9,6 @@ public class PowerupItemData : ScriptableObject
     public Color powerupColor = Color.white;
     public bool playerFlight = false;
     public bool noSpikes = false;
-    public AudioClip powerupSound;
     public float powerUpActiveTime;
 
 }

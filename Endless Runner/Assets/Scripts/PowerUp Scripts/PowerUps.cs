@@ -19,17 +19,11 @@ public class PowerUps : MonoBehaviour
     // Audio
     public AudioClip currentPowerupSound;
     // Find Components
-    public AudioSource playPowerupAudio;
 
 
     // Find Scripts
     private PowerUpManager m_PowerUpManager;
 
-    public void Awake()
-    {
-        // Find Components
-        playPowerupAudio = GetComponent<AudioSource>();
-    }
 
     public void OnEnable()
     {
@@ -43,12 +37,6 @@ public class PowerUps : MonoBehaviour
     {
         // Find Scripts
         m_PowerUpManager = FindObjectOfType<PowerUpManager>();
-    }
-
-    public void Update()
-    {
-        // Audio
-        playPowerupAudio.clip = currentPowerupSound;    // Takes Audio From 'myPowerupObjects' Array
     }
 
     // Power-Up Config
@@ -73,35 +61,11 @@ public class PowerUps : MonoBehaviour
         noSpikesBool = myPowerupObjects[currentPowerupPicker].noSpikes;
         // Power-Up Active Time
         currentPowerUpActiveTime = myPowerupObjects[currentPowerupPicker].powerUpActiveTime;
-        // Power-Up Sound
-        currentPowerupSound = myPowerupObjects[currentPowerupPicker].powerupSound;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // Audio
-        playPowerupAudio.Play();
-
-        // Turns Off Sprite
-        GetComponent<SpriteRenderer>().enabled = false;
-    }
-
-    // Waits Set Amount Of Seconds
-    IEnumerator WaitTill()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-        // Goes where 'StartCoroutine("WaitTill");' Is
         m_PowerUpManager.ActivatePowerUp(playerFlightBool, noSpikesBool, currentPowerUpActiveTime);    // Sends The Selected Variables (At The Top) To the 'ActivatePowerUp' Method In The 'PowerUpManager' Script
         gameObject.SetActive(false);
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        // Checks if touching a gameObject that has the name "Player"
-        if (collision.name == "Player")
-        {
-            StartCoroutine("WaitTill");
-        }
-
     }
 }
